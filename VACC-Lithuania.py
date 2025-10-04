@@ -59,7 +59,7 @@ translations = {
         "fresh_install": "Neuinstallation",
         "Choose_a_profile": "Profil auswählen",
         "start": "Starten",
-        "sectorfile_version": "Es öffnet sich ein Fenster sobald diese Nachricht geschlossen wird.\n Bitte Entpacke das Sectorfile in diesen Ordner und drücke danach wieder Start",
+        "sectorfile_version": "ACHTUNG!\n\nAufgrund von Änderungen beim Navdata-Anbieter müssen Sie die Sektor-Datei manuell herunterladen. Wenn diese Nachricht geschlossen wird, öffnet Ihr Webbrowser die entsprechende AeroNav GNG-Seite.\nBitte melden Sie sich mit Ihren Navigraph- und VATSIM-Konten an, laden Sie die Datei herunter und extrahieren Sie deren Inhalt in den ebenfalls geöffneten Ordner.\nAnschließend können Sie im Hauptfenster erneut auf Starten drücken.",
      },
     "Dutch": {
         "custom_files": "Aangepaste Bestanden",
@@ -82,7 +82,7 @@ translations = {
         "fresh_install": "Schone installatie",
         "Choose_a_profile": "Kies een profiel",
         "start": "Starten",
-        "sectorfile_version": "Es öffnet sich ein Fenster sobald diese Nachricht geschlossen wird.\nBitte Entpacke das Sectorfile in diesen Ordner und drücke danach wieder Start.",
+        "sectorfile_version": "LET OP!\n\nVanwege wijzigingen bij de navdata-provider moet u het sectorbestand handmatig downloaden. Wanneer dit bericht wordt gesloten, opent uw webbrowser de relevante AeroNav GNG-pagina.\nLog in met uw Navigraph- en VATSIM-accounts, download het bestand en pak de inhoud uit in de map die ook geopend zal worden.\nVervolgens kunt u opnieuw op Starten drukken in het hoofdvenster.",
     },
     "English": {
         "custom_files": "Custom Files",
@@ -105,7 +105,7 @@ translations = {
         "fresh_install": "Fresh install",
         "Choose_a_profile": "Choose a profile",
         "start": "Start",
-        "sectorfile_version": "A window will open as soon as this message is closed.\nPlease extract the sector file into this folder and then press Start again.",
+        "sectorfile_version": "ATTENTION!\n\nDue to navdata provider changes, you must manually download the sectorfile. When this message is closed, your web browser will open the relevant AeroNav GNG page.\nPlease log in with your Navigraph and VATSIM accounts, download the file and extract its contents in the folder that will also be opened.\nYou may then press Start in the main window again.",
     },
     "French": {
         "custom_files": "Fichiers Personnalisés",
@@ -128,7 +128,7 @@ translations = {
         "fresh_install": "Nouvelle installation",
         "Choose_a_profile": "Choisissez un profil",
         "start": "Démarrer",
-        "sectorfile_version": "Une fenêtre s’ouvrira dès que ce message sera fermé.\nVeuillez extraire le fichier sector dans ce dossier, puis appuyez à nouveau sur Démarrer.",
+        "sectorfile_version": "ATTENTION!\n\nEn raison de changements du fournisseur de navdata, vous devez télécharger manuellement le fichier de secteur. Lorsque ce message sera fermé, votre navigateur web ouvrira la page AeroNav GNG correspondante.\nVeuillez vous connecter avec vos comptes Navigraph et VATSIM, télécharger le fichier et extraire son contenu dans le dossier qui sera également ouvert.\nVous pourrez ensuite appuyer à nouveau sur Démarrer dans la fenêtre principale.",
     },
     "Italian": {
         "custom_files": "File Personalizzati",
@@ -151,7 +151,7 @@ translations = {
         "fresh_install": "Nuova installazione",
         "Choose_a_profile": "Scegli un profilo",
         "start": "Avvia",
-        "sectorfile_version": "Si aprirà una finestra non appena questo messaggio viene chiuso.\nPer favore, estrai il file del settore in questa cartella e poi premi nuovamente Avvia.",
+        "sectorfile_version": "ATTENZIONE!\n\nA causa di modifiche al fornitore dei dati di navigazione, è necessario scaricare manualmente il file del settore. Quando questo messaggio sarà chiuso, il tuo browser web aprirà la pagina AeroNav GNG pertinente.\nAccedi con i tuoi account Navigraph e VATSIM, scarica il file ed estrai il suo contenuto nella cartella che verrà anch'essa aperta.\nPoi, puoi premere nuovamente Start nella finestra principale.",
     },
     "Lithuanian": {
         "custom_files": "Pritaikyti Failai",
@@ -174,7 +174,7 @@ translations = {
         "fresh_install": "Šviežia diegimas",
         "Choose_a_profile": "Pasirinkite profilį",
         "start": "Pradėti",
-        "sectorfile_version": "Langas atsidarys, kai tik ši žinutė bus uždaryta.\nPrašome išarchyvuoti sektoriaus failą į šį aplanką ir tada dar kartą paspausti Pradėti.",
+        "sectorfile_version": "Dėmesio!\n\nDėl navigacinių duomenų tiekėjo pasiketimo, sektoriaus failas privalo būti atnaujintas rankiniu būdu. Kai ši žinutė bus uždaryta, jūsų naršyklėje bus atvertas atitinkamas AeroNav GNG puslapis.\nPrašome prisijungti su savo Navigraph ir VATSIM paskyromis, parsisiūsti failą ir išarchyvuoti jo turinį į aplanką kuris taip pat bus atvertas.\nTada galite dar kartą paspausti Pradėti pagrindiniame lange.",
     },
     "Slovak": {
         "custom_files": "Vlastné Súbory",
@@ -197,7 +197,7 @@ translations = {
         "fresh_install": "Nová inštalácia",
         "Choose_a_profile": "Vyberte profil",
         "start": "Štart",
-        "sectorfile_version": "Okno sa otvorí hneď, ako sa táto správa zatvorí.\nProsím, rozbaľte sektorový súbor do tejto zložky a potom znova stlačte Štart.",
+        "sectorfile_version": "POZOR!\n\nVzhľadom na zmeny u poskytovateľa navdata musíte sektorový súbor stiahnuť manuálne. Po zatvorení tejto správy sa vo vašom webovom prehliadači otvorí príslušná stránka AeroNav GNG.\nPrihláste sa pomocou svojich účtov Navigraph a VATSIM, stiahnite súbor a rozbaľte jeho obsah do priečinka, ktorý sa taktiež otvorí.\nNásledne môžete opäť stlačiť tlačidlo Start v hlavnom okne.",
     }
 }
 
