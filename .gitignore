@@ -1,4 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
 venv/
-venv/*
+env/
+ENV/
+
+# IDE
+.vscode/
 .idea/
-.idea/*
+.*/
+*.swp
+*.swo
+*~
+
+# Application specific
+temp/
+Euroscope/
+Sectorfile/
+Customfiles/
+*.prf
+*.log
+
+# Build artifacts
+*.exe
+*.spec

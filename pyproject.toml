@@ -1,0 +1,45 @@
+[project]
+name = "sectorfile-installer"
+version = "2.0.0"
+description = "EuroScope sectorfile installer for vACC Lithuania"
+authors = [{name = "Lithuania vACC"}]
+requires-python = ">=3.10"
+dependencies = [
+    "flet>=0.25.0",
+    "psutil>=7.0.0",
+    "darkdetect>=0.8.0",
+    "python-msi",
+    "lnkcreator",
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=24.0.0",
+    "ruff>=0.8.0",
+    "mypy>=1.11.0",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "A", "C4", "DTZ", "PIE", "PT", "SIM"]
+ignore = ["E501"]  # Line too long (handled by formatter)
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+strict_optional = true
+
+[build-system]
+requires = ["flit_core>=3.2"]
+build-backend = "flit_core.buildapi"
