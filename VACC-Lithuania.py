@@ -40,48 +40,50 @@ else:
 translations = {
     "English": {
         "custom_files": "Custom Files",
-        "setting": "Setting",
-        "language": "Language",
+        "setting": "Settings",
+        "language": "Language:",
         "name": "Name:",
-        "vatsim_id": "Vatsim ID:",
-        "vatsim_password": "Vatsim password:",
-        "rating": "Rating:",
-        "hoppie_code": "Hoppie code:",
-        "afv_path": "Path for the audio tool from Vatsim:",
+        "vatsim_id": "VATSIM ID:",
+        "vatsim_password": "VATSIM Password:",
+        "rating": "Network Rating:",
+        "hoppie_code": "Hoppie Logon Code:",
+        "afv_path": "Path to Audio Client:",
         "browse": "Browse",
         "save": "Save",
-        "missing_data_title": "Missing data",
-        "missing_data": "At least name, Vatsim ID, Vatsim password, and rating must be set.",
+        "missing_data_title": "Missing data!",
+        "missing_data": "At least name, VATSIM ID, password and rating must be set.",
         "update_available": "Update available",
         "installer_version": "A newer version of the installer is available.",
         "error_title": "Error",
-        "error installercheck": "No internet connection, or online version not found.",
-        "fresh_install": "Fresh install",
-        "Choose_a_profile": "Choose a profile",
+        "error installercheck": "No internet connection, or remote server not found.",
+        "fresh_install": "Perform Clean Install",
+        "Choose_a_profile": "Choose a Profile",
         "start": "Start",
+        "select_path_voice": "Select AFV.exe",
         "sectorfile_version": "ATTENTION!\n\nDue to navdata provider changes, you must manually download the sectorfile. When this message is closed, your web browser will open the relevant AeroNav GNG page.\nPlease log in with your Navigraph and VATSIM accounts, download the file and extract its contents in the folder that will also be opened.\nYou may then press Start in the main window again.",
     },
-    "Lithuanian": {
-        "custom_files": "Pritaikyti Failai",
-        "setting": "Nustatymas",
-        "language": "Kalba",
+    "Lietuvių": {
+        "custom_files": "Individualizuoti\nfailai",
+        "setting": "Nustatymai",
+        "language": "Kalba:",
         "name": "Vardas:",
-        "vatsim_id": "Vatsim ID:",
-        "vatsim_password": "Vatsim slaptažodis:",
-        "rating": "Įvertinimas:",
+        "vatsim_id": "VATSIM ID:",
+        "vatsim_password": "VATSIM slaptažodis:",
+        "rating": "Reitingas:",
         "hoppie_code": "Hoppie kodas:",
-        "afv_path": "Kelias į garso įrankį iš Vatsim:",
+        "afv_path": "Kelias į garso programą:",
         "browse": "Naršyti",
         "save": "Išsaugoti",
-        "missing_data_title": "Trūksta duomenų",
-        "missing_data": "Turi būti nustatyta bent jau vardas, Vatsim ID, Vatsim slaptažodis ir įvertinimas.",
-        "update_available": "Galimas atnaujinimas",
-        "installer_version": "Galima naujesnė diegimo programos versija.",
+        "missing_data_title": "Trūksta duomenų!",
+        "missing_data": "Turi būti įvestas bent vardas, VATSIM ID slaptažodis ir reitingas.",
+        "update_available": "Išleistas atnaujinimas",
+        "installer_version": "Pasiekiama naujesnė diegimo programos versija.",
         "error_title": "Klaida",
-        "error installercheck": "Nėra interneto ryšio arba nerasta internetinė versija.",
-        "fresh_install": "Šviežia diegimas",
+        "error installercheck": "Nėra interneto ryšio arba nerastas nuotolinis serveris.",
+        "fresh_install": "Įdiegti iš naujo",
         "Choose_a_profile": "Pasirinkite profilį",
         "start": "Pradėti",
+        "select_path_voice": "Pasirinkite AFV.exe",
         "sectorfile_version": "Dėmesio!\n\nDėl navigacinių duomenų tiekėjo pasiketimo, sektoriaus failas privalo būti atnaujintas rankiniu būdu. Kai ši žinutė bus uždaryta, jūsų naršyklėje bus atvertas atitinkamas AeroNav GNG puslapis.\nPrašome prisijungti su savo Navigraph ir VATSIM paskyromis, parsisiūsti failą ir išarchyvuoti jo turinį į aplanką kuris taip pat bus atvertas.\nTada galite dar kartą paspausti Pradėti pagrindiniame lange.",
     }
 }
@@ -380,9 +382,9 @@ def installation_euroscope():
 def show_restart():
     global restart_screen
     restart_screen = tk.Tk()
-    restart_screen.title("Restart required")
+    restart_screen.title("Restart required!")
     restart_screen.geometry("300x100")
-    ttk.Label(restart_screen, text="Language is changed after Restarting the program ").pack(pady=20)
+    ttk.Label(restart_screen, text="Language change applies after restarting the program.").pack(pady=20)
 
 
 def button_fresh_install():
@@ -586,7 +588,7 @@ def button_setting():
 
     def browse_afv_path():
         file_path = filedialog.askopenfilename(
-            title="select AFV.exe",
+            title=translate("select_path_voice"),
             filetypes=[("Executable Files", "*.exe")]
         )
         if file_path:
