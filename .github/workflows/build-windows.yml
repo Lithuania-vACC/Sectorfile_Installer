@@ -1,0 +1,67 @@
+name: Build Windows Application
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install nuitka ordered-set zstandard
+
+    - name: Build with Nuitka
+      run: |
+        scripts\build-windows.bat
+
+    - name: Create artifact name
+      id: artifact
+      shell: bash
+      run: |
+        if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        else
+          VERSION="${{ github.sha }}"
+          VERSION=${VERSION:0:7}
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "filename=sectorfile-installer-$VERSION-windows.zip" >> $GITHUB_OUTPUT
+
+    - name: Zip build output
+      run: |
+        Compress-Archive -Path main.dist\* -DestinationPath ${{ steps.artifact.outputs.filename }}
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.artifact.outputs.filename }}
+        path: ${{ steps.artifact.outputs.filename }}
+        retention-days: 30
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ steps.artifact.outputs.filename }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
