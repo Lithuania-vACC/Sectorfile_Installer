@@ -38,6 +38,7 @@ temp/
 Euroscope/
 Sectorfile/
 Customfiles/
+config.json
 *.prf
 *.log
 
