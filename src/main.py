@@ -42,8 +42,9 @@ def main(page: ft.Page) -> None:
     page.window.height = settings.WINDOW_HEIGHT
     page.window.resizable = False
 
-    # Use base64-encoded icon for compiled binary
-    page.window.icon = base64.b64decode(ICON_B64)
+    icon_path = path_manager.assets / "icon.ico"
+    if icon_path.exists():
+        page.window.icon = str(icon_path)
 
     main_view = MainView(page)
 
