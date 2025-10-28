@@ -45,7 +45,7 @@ jobs:
           VERSION=${VERSION:0:7}
         fi
         echo "version=$VERSION" >> $GITHUB_OUTPUT
-        echo "filename=sectorfile-installer-$VERSION-windows.zip" >> $GITHUB_OUTPUT
+        echo "filename=sectorfile-installer-$VERSION-windows" >> $GITHUB_OUTPUT
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
