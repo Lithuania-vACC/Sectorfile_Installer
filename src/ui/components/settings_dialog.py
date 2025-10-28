@@ -5,6 +5,7 @@ from pathlib import Path
 
 from models import UserConfig, VatsimRating
 from services import ConfigManager
+from ui.components.error_dialogs import BaseDialog
 
 
 class SettingsDialog:
@@ -195,26 +196,5 @@ class SettingsDialog:
             title: Error title
             message: Error message
         """
-        self.error_dialog = ft.AlertDialog(
-            modal=True,
-            title=ft.Text(title, size=18, weight=ft.FontWeight.BOLD),
-            content=ft.Container(
-                content=ft.Text(message, size=14),
-                padding=10,
-            ),
-            actions=[
-                ft.FilledButton(text="OK", on_click=self._close_error_dialog)
-            ],
-            actions_alignment=ft.MainAxisAlignment.END,
-        )
-        self.page.overlay.append(self.error_dialog)
-        self.error_dialog.open = True
-        self.page.update()
-
-    def _close_error_dialog(self) -> None:
-        """Close the error dialog."""
-        if hasattr(self, 'error_dialog'):
-            self.error_dialog.open = False
-            if self.error_dialog in self.page.overlay:
-                self.page.overlay.remove(self.error_dialog)
-            self.page.update()
+        error_dialog = BaseDialog(self.page, title, message)
+        error_dialog.show()
