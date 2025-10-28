@@ -2,7 +2,7 @@
 echo Building Sectorfile Installer with Nuitka...
 
 REM Build with Nuitka
-nuitka src/main.py --windows-console-mode=disable --msvc=latest --deployment --standalone
+nuitka src/main.py --windows-console-mode=disable --msvc=latest --deployment --standalone --assume-yes-for-downloads
 
 if %ERRORLEVEL% NEQ 0 (
     echo Build failed!
