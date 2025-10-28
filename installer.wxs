@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*"
+           Name="vACC Lithuania Sectorfile Installer"
+           Language="1033"
+           Version="1.0.0.0"
+           Manufacturer="vACC Lithuania"
+           UpgradeCode="12345678-1234-1234-1234-123456789012">
+
+    <Package InstallerVersion="200"
+             Compressed="yes"
+             InstallScope="perUser"
+             InstallPrivileges="limited" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+    <MediaTemplate EmbedCab="yes" />
+
+    <!-- Properties for install directory -->
+    <Property Id="INSTALLFOLDER">
+      <RegistrySearch Id="FindInstallLocation"
+                      Root="HKCU"
+                      Key="Software\vACC Lithuania\Sectorfile Installer"
+                      Name="InstallLocation"
+                      Type="raw" />
+    </Property>
+
+    <!-- UI for installation -->
+    <UIRef Id="WixUI_InstallDir" />
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+
+    <!-- Custom UI for shortcuts -->
+    <Property Id="CREATE_DESKTOP_SHORTCUT" Value="1" />
+    <Property Id="CREATE_STARTMENU_SHORTCUT" Value="1" />
+
+    <!-- Directory structure -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="LocalAppDataFolder">
+        <Directory Id="INSTALLFOLDER" Name="vACC Lithuania Sectorfile Installer" />
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="vACC Lithuania" />
+      </Directory>
+
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+
+    <!-- Application files will be included via heat-generated fragment -->
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="RegistryEntries" Guid="*">
+        <RegistryValue Root="HKCU"
+                       Key="Software\vACC Lithuania\Sectorfile Installer"
+                       Name="InstallLocation"
+                       Type="string"
+                       Value="[INSTALLFOLDER]"
+                       KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <!-- Desktop shortcut component (conditional) -->
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="DesktopShortcut" Guid="*">
+        <Condition>CREATE_DESKTOP_SHORTCUT = 1</Condition>
+        <Shortcut Id="DesktopShortcutId"
+                  Name="vACC Lithuania"
+                  Target="[INSTALLFOLDER]main.exe"
+                  WorkingDirectory="INSTALLFOLDER"
+                  Icon="AppIcon.exe"
+                  IconIndex="0" />
+        <RegistryValue Root="HKCU"
+                       Key="Software\vACC Lithuania\Sectorfile Installer"
+                       Name="DesktopShortcut"
+                       Type="integer"
+                       Value="1"
+                       KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <!-- Start Menu shortcut -->
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="StartMenuShortcut" Guid="*">
+        <Condition>CREATE_STARTMENU_SHORTCUT = 1</Condition>
+        <Shortcut Id="StartMenuShortcutId"
+                  Name="vACC Lithuania"
+                  Target="[INSTALLFOLDER]main.exe"
+                  WorkingDirectory="INSTALLFOLDER"
+                  Icon="AppIcon.exe"
+                  IconIndex="0" />
+        <RemoveFolder Id="RemoveStartMenuFolder" On="uninstall" />
+        <RegistryValue Root="HKCU"
+                       Key="Software\vACC Lithuania\Sectorfile Installer"
+                       Name="StartMenuShortcut"
+                       Type="integer"
+                       Value="1"
+                       KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <!-- Icon -->
+    <Icon Id="AppIcon.exe" SourceFile="main.dist\main.exe" />
+
+    <!-- Features -->
+    <Feature Id="ProductFeature" Title="vACC Lithuania Sectorfile Installer" Level="1">
+      <ComponentGroupRef Id="HarvestedFiles" />
+      <ComponentRef Id="RegistryEntries" />
+      <ComponentRef Id="StartMenuShortcut" />
+      <ComponentRef Id="DesktopShortcut" />
+    </Feature>
+
+    <!-- Custom UI -->
+    <UI>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg" Order="4">1</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="CustomizeDlg" Order="2">NOT Installed OR WixUI_InstallMode = "Change"</Publish>
+
+      <Dialog Id="CustomizeDlg" Width="370" Height="270" Title="[ProductName] Setup">
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="{\WixUI_Font_Title}Customize Installation" />
+        <Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" Text="Choose installation options" />
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.InstallDirDlgBannerBitmap)" />
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+
+        <Control Id="DesktopShortcutCheckBox" Type="CheckBox" X="20" Y="60" Width="290" Height="18"
+                 Property="CREATE_DESKTOP_SHORTCUT" CheckBoxValue="1" Text="Create a desktop shortcut" />
+
+        <Control Id="StartMenuShortcutCheckBox" Type="CheckBox" X="20" Y="85" Width="290" Height="18"
+                 Property="CREATE_STARTMENU_SHORTCUT" CheckBoxValue="1" Text="Create a Start Menu shortcut" />
+
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)">
+          <Publish Event="NewDialog" Value="InstallDirDlg">1</Publish>
+        </Control>
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+          <Publish Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+        </Control>
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+      </Dialog>
+    </UI>
+  </Product>
+</Wix>
