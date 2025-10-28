@@ -98,13 +98,13 @@ jobs:
         name: ${{ steps.artifact.outputs.msi_name }}
         path: ${{ steps.artifact.outputs.msi_name }}
         retention-days: 30
-#
-#    - name: Create Release
-#      if: startsWith(github.ref, 'refs/tags/')
-#      uses: softprops/action-gh-release@v1
-#      with:
-#        files: ${{ steps.artifact.outputs.msi_name }}
-#        draft: true
-#        prerelease: true
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ steps.artifact.outputs.msi_name }}
+        draft: true
+        prerelease: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
