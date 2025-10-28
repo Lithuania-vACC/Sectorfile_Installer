@@ -14,7 +14,6 @@
 
     <MediaTemplate EmbedCab="yes" />
 
-    <!-- Properties for install directory -->
     <Property Id="INSTALLFOLDER">
       <RegistrySearch Id="FindInstallLocation"
                       Root="HKCU"
@@ -31,11 +30,9 @@
     <UIRef Id="WixUI_InstallDir" />
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
 
-    <!-- Custom UI for shortcuts -->
     <Property Id="CREATE_DESKTOP_SHORTCUT" Value="1" />
     <Property Id="CREATE_STARTMENU_SHORTCUT" Value="1" />
 
-    <!-- Directory structure -->
     <StandardDirectory Id="LocalAppDataFolder">
       <Directory Id="INSTALLFOLDER" Name="vACC Lithuania Sectorfile Installer" />
     </StandardDirectory>
@@ -45,7 +42,6 @@
     </StandardDirectory>
 
     <StandardDirectory Id="DesktopFolder">
-      <!-- Desktop shortcut component (conditional) -->
       <Component Id="DesktopShortcut" Guid="*" Condition="CREATE_DESKTOP_SHORTCUT = 1">
         <Shortcut Id="DesktopShortcutId"
                   Name="vACC Lithuania"
@@ -62,7 +58,7 @@
       </Component>
     </StandardDirectory>
 
-    <!-- Application files will be included via heat-generated fragment -->
+    <!-- Application files will be included via Files element (replaces heat) -->
     <DirectoryRef Id="INSTALLFOLDER">
       <Component Id="RegistryEntries" Guid="*">
         <RegistryValue Root="HKCU"
@@ -73,6 +69,11 @@
                        KeyPath="yes" />
       </Component>
     </DirectoryRef>
+
+    <!-- Harvest all files from main.dist directory -->
+    <ComponentGroup Id="HarvestedFiles" Directory="INSTALLFOLDER">
+      <Files Include="main.dist\**" />
+    </ComponentGroup>
 
     <!-- Start Menu shortcut -->
     <DirectoryRef Id="ApplicationProgramsFolder">

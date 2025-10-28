@@ -88,13 +88,9 @@ jobs:
         wix --version
         wix extension add -g WixToolset.UI.wixext
 
-    - name: Harvest files with heat
-      run: |
-        heat dir main.dist -cg HarvestedFiles -gg -scom -sreg -sfrag -srd -dr INSTALLFOLDER -out harvested.wxs
-
     - name: Build MSI
       run: |
-        wix build installer.wxs harvested.wxs -ext WixToolset.UI.wixext -out ${{ steps.artifact.outputs.msi_name }}
+        wix build installer.wxs -ext WixToolset.UI.wixext -out ${{ steps.artifact.outputs.msi_name }}
 
     - name: Upload MSI artifact
       uses: actions/upload-artifact@v4
