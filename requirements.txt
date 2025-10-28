@@ -1,4 +1,4 @@
-flet>=0.25.0
+flet==0.28.3
 psutil>=7.0.0
 darkdetect>=0.8.0
 python-msi

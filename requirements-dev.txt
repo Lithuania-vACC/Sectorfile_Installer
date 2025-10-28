@@ -2,3 +2,4 @@
 nuitka
 ordered-set
 zstandard
+flet-desktop==0.28.3
