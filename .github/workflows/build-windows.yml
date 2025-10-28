@@ -47,15 +47,11 @@ jobs:
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "filename=sectorfile-installer-$VERSION-windows.zip" >> $GITHUB_OUTPUT
 
-    - name: Zip build output
-      run: |
-        Compress-Archive -Path main.dist\* -DestinationPath ${{ steps.artifact.outputs.filename }}
-
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.artifact.outputs.filename }}
-        path: ${{ steps.artifact.outputs.filename }}
+        path: main.dist\*
         retention-days: 30
 
     - name: Create Release
