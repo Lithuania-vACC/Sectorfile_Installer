@@ -84,7 +84,7 @@ jobs:
 
     - name: Install WiX Toolset
       run: |
-        dotnet tool install --global wix --version 5.0.2
+        dotnet tool install --global wix
         wix --version
         wix extension add -g WixToolset.UI.wixext
 
