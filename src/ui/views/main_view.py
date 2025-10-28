@@ -3,6 +3,8 @@
 import flet as ft
 from pathlib import Path
 
+from assets.vacc_lithuania_darkgreen_transparent_b64 import IMAGE_B64 as LOGO_DARK_B64
+from assets.vacc_lithuania_white_transparent_b64 import IMAGE_B64 as LOGO_WHITE_B64
 from config.settings import settings
 from services import (
     ConfigManager,
@@ -52,7 +54,7 @@ class MainView(ft.View):
             Container with all UI elements
         """
         self.logo = ft.Image(
-            src=self._get_logo_path(),
+            src_base64=self._get_logo_base64(),
             width=400,
             height=190,
             fit=ft.ImageFit.CONTAIN,
@@ -205,15 +207,13 @@ class MainView(ft.View):
             import traceback
             traceback.print_exc()
 
-    def _get_logo_path(self) -> str:
-        """Get the appropriate logo based on theme mode."""
+    def _get_logo_base64(self) -> str:
+        """Get the appropriate logo base64 string based on theme mode."""
         config = self.config_manager.config
         if config.theme_mode == "dark":
-            logo_path = self.path_manager.assets / "vacc_lithuania_white_transparent.png"
+            return LOGO_WHITE_B64
         else:
-            logo_path = self.path_manager.assets / "vacc_lithuania_darkgreen_transparent.png"
-
-        return str(logo_path) if logo_path.exists() else None
+            return LOGO_DARK_B64
 
     def _get_theme_icon(self) -> str:
         """Get the appropriate icon for current theme."""
@@ -237,5 +237,5 @@ class MainView(ft.View):
         self.config_manager.save(config)
 
         self.theme_button.icon = self._get_theme_icon()
-        self.logo.src = self._get_logo_path()
+        self.logo.src_base64 = self._get_logo_base64()
         self.page.update()

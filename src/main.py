@@ -1,8 +1,10 @@
 """Main application entry point."""
 
+import base64
 import flet as ft
 from pathlib import Path
 
+from assets.icon_b64 import IMAGE_B64 as ICON_B64
 from config.settings import settings
 from services import ConfigManager, PathManager
 from ui.components.settings_dialog import SettingsDialog
@@ -40,9 +42,8 @@ def main(page: ft.Page) -> None:
     page.window.height = settings.WINDOW_HEIGHT
     page.window.resizable = False
 
-    icon_path = path_manager.assets / "icon.ico"
-    if icon_path.exists():
-        page.window.icon = str(icon_path)
+    # Use base64-encoded icon for compiled binary
+    page.window.icon = base64.b64decode(ICON_B64)
 
     main_view = MainView(page)
 
