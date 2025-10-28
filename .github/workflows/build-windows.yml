@@ -1,0 +1,110 @@
+name: Build Windows Application
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+
+    - name: Build with Nuitka
+      run: |
+        scripts\build-windows.bat
+
+    - name: Create artifact name
+      id: artifact
+      shell: bash
+      run: |
+        if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        else
+          VERSION="${{ github.sha }}"
+          VERSION=${VERSION:0:7}
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "filename=sectorfile-installer-$VERSION-windows" >> $GITHUB_OUTPUT
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.artifact.outputs.filename }}
+        path: main.dist\*
+        retention-days: 30
+
+  package:
+    needs: build
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Create artifact name
+      id: artifact
+      shell: bash
+      run: |
+        if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        else
+          VERSION="${{ github.sha }}"
+          VERSION=${VERSION:0:7}
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "zip_name=sectorfile-installer-$VERSION-windows" >> $GITHUB_OUTPUT
+        echo "msi_name=sectorfile-installer-$VERSION-windows.msi" >> $GITHUB_OUTPUT
+
+    - name: Download build artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ steps.artifact.outputs.zip_name }}
+        path: main.dist
+
+    - name: Install WiX Toolset
+      run: |
+        dotnet tool install --global wix
+        wix --version
+        wix extension add -g WixToolset.UI.wixext
+
+    - name: Build MSI
+      run: |
+        wix build installer.wxs -ext WixToolset.UI.wixext -out ${{ steps.artifact.outputs.msi_name }}
+
+    - name: Upload MSI artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.artifact.outputs.msi_name }}
+        path: ${{ steps.artifact.outputs.msi_name }}
+        retention-days: 30
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ steps.artifact.outputs.msi_name }}
+        draft: true
+        prerelease: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
