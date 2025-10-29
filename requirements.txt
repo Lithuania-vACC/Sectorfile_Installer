@@ -6,3 +6,5 @@ lnkcreator
 requests>=2.31.0
 beautifulsoup4>=4.12.0
 certifi
+packaging>=23.0
+tomli>=2.0.0; python_version < "3.11"

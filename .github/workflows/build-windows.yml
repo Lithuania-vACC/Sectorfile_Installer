@@ -87,10 +87,18 @@ jobs:
         dotnet tool install --global wix
         wix --version
         wix extension add -g WixToolset.UI.wixext
+        wix extension add -g WixToolset.Util.wixext
 
     - name: Build MSI
       run: |
-        wix build installer.wxs -ext WixToolset.UI.wixext -out ${{ steps.artifact.outputs.msi_name }}
+        wix build installer.wxs -ext WixToolset.UI.wixext -ext WixToolset.Util.wixext -out ${{ steps.artifact.outputs.msi_name }}
+
+    - name: Create main.dist.zip for auto-updates
+      shell: bash
+      run: |
+        cd main.dist
+        7z a -tzip ../main.dist.zip *
+        cd ..
 
     - name: Upload MSI artifact
       uses: actions/upload-artifact@v4
@@ -99,11 +107,20 @@ jobs:
         path: ${{ steps.artifact.outputs.msi_name }}
         retention-days: 30
 
+    - name: Upload zip artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: main.dist.zip
+        path: main.dist.zip
+        retention-days: 30
+
     - name: Create Release
       if: startsWith(github.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v1
       with:
-        files: ${{ steps.artifact.outputs.msi_name }}
+        files: |
+          ${{ steps.artifact.outputs.msi_name }}
+          main.dist.zip
         draft: true
         prerelease: true
       env:

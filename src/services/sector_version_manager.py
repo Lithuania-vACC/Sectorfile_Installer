@@ -59,7 +59,7 @@ class SectorVersionManager:
             ConnectionError: If the AeroNav page cannot be fetched
             ValueError: If no valid sectorfile versions are found
         """
-        url = f"https://files.aero-nav.com/{settings.FIR_CODE}"
+        url = f"{settings.AERONAV_BASE_URL}/{settings.FIR_CODE}"
         response = requests.get(url)
 
         if response.status_code != 200:

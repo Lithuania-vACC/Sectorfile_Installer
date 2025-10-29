@@ -76,8 +76,7 @@ class Installer:
                 progress_callback("Downloading EuroScope MSI installer...")
 
             msi_path = self.path_manager.temp / "EuroScopeSetup.msi"
-            msi_url = "https://euroscope.hu/install/EuroScopeSetup.3.2.3.2.msi"
-            urllib.request.urlretrieve(msi_url, msi_path)
+            urllib.request.urlretrieve(settings.EUROSCOPE_MSI_URL, msi_path)
 
             if progress_callback:
                 progress_callback("Extracting files from MSI...")
@@ -131,7 +130,7 @@ class Installer:
         if platform.system() != "Windows":
             return
 
-        system_font_path = Path("C:/Windows/Fonts/EuroScope.ttf")
+        system_font_path = Path(settings.EUROSCOPE_FONT_PATH)
 
         if system_font_path.exists():
             print("EuroScope font is already installed.")
@@ -181,7 +180,7 @@ class Installer:
                 elif item.is_dir():
                     shutil.rmtree(item)
 
-            aeronav_url = f"https://files.aero-nav.com/{settings.FIR_CODE}"
+            aeronav_url = f"{settings.AERONAV_BASE_URL}/{settings.FIR_CODE}"
             webbrowser.open(aeronav_url)
 
             self._open_file_explorer(self.path_manager.sectorfile)
@@ -216,17 +215,20 @@ class Installer:
             return False
 
     def _wait_for_zip_file(
-        self, progress_callback: Optional[Callable[[str], None]] = None, timeout: int = 300
+        self, progress_callback: Optional[Callable[[str], None]] = None, timeout: int = None
     ) -> Optional[Path]:
         """Wait for a zip file to appear in the Sectorfile directory.
 
         Args:
             progress_callback: Optional callback for progress updates
-            timeout: Maximum time to wait in seconds (default: 5 minutes)
+            timeout: Maximum time to wait in seconds (default: from settings)
 
         Returns:
             Path to the zip file if found, None if timeout
         """
+        if timeout is None:
+            timeout = settings.SECTORFILE_DOWNLOAD_TIMEOUT
+
         start_time = time.time()
 
         while time.time() - start_time < timeout:
