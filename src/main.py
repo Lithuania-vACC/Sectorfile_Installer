@@ -92,9 +92,13 @@ def main(page: ft.Page) -> None:
     page.window.height = settings.WINDOW_HEIGHT
     page.window.resizable = False
 
+    page.update()
+
     icon_path = path_manager.assets / "icon.ico"
     if icon_path.exists():
         page.window.icon = str(icon_path)
+
+    page.update()
 
     # Check for application updates before showing main view
     should_continue = check_for_updates(page)
