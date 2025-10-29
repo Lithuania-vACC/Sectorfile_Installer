@@ -27,11 +27,15 @@ timeout /t 5 /nobreak >nul
 
 echo Removing old files...
 
-REM Delete old files (except updater.bat and updater_config.json)
+REM Delete old files (except updater.bat, config.json, and user data folders)
 for /d %%d in ("%INSTALL_PATH%\*") do (
-    if /i not "%%~nxd"=="updater.bat" (
-        if /i not "%%~nxd"=="config.json" (
-            rmdir /s /q "%%d" 2>nul
+    if /i not "%%~nxd"=="Euroscope" (
+        if /i not "%%~nxd"=="Customfiles" (
+            if /i not "%%~nxd"=="Sectorfile" (
+                if /i not "%%~nxd"=="temp" (
+                    rmdir /s /q "%%d" 2>nul
+                )
+            )
         )
     )
 )
