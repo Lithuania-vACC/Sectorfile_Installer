@@ -21,8 +21,6 @@
                       Type="raw" />
     </Property>
 
-    <SetDirectory Id="INSTALLFOLDER" Value="[LocalAppDataFolder]vACC Lithuania Sectorfile Installer" Sequence="both" />
-
     <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
 
     <Property Id="CREATE_DESKTOP_SHORTCUT" Value="1" />
@@ -62,6 +60,7 @@
                        Type="string"
                        Value="[INSTALLFOLDER]"
                        KeyPath="yes" />
+        <RemoveFolder Id="RemoveINSTALLFOLDER" On="uninstall" />
       </Component>
     </DirectoryRef>
 
