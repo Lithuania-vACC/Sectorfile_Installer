@@ -76,7 +76,7 @@ class Installer:
                 progress_callback("Downloading EuroScope MSI installer...")
 
             msi_path = self.path_manager.temp / "EuroScopeSetup.msi"
-            msi_url = "https://euroscope.hu/install/EuroScopeSetup.3.2.3.1.msi"
+            msi_url = "https://euroscope.hu/install/EuroScopeSetup.3.2.3.2.msi"
             urllib.request.urlretrieve(msi_url, msi_path)
 
             if progress_callback:
