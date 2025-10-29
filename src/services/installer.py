@@ -18,6 +18,12 @@ from services.path_manager import PathManager
 
 def extract_root(root, output: Path, is_root: bool = True):
     """Extract files from MSI root directory."""
+
+    FOLDER_NAME_MAP = {
+        "_635FE19FDC6F4CF2866FC8696C8E5A0E": "soundbackends",
+        "_E7043CA494204E24ABEE6401A7892467": "sounds",
+    }
+
     if not output.exists():
         output.mkdir(parents=True, exist_ok=True)
 
@@ -31,7 +37,10 @@ def extract_root(root, output: Path, is_root: bool = True):
     for child in root.children.values():
         folder_name = child.name
         if is_root:
-            if "." in child.id:
+            # Check if this ID has a mapped name
+            if child.id in FOLDER_NAME_MAP:
+                folder_name = FOLDER_NAME_MAP[child.id]
+            elif "." in child.id:
                 folder_name, guid = child.id.split(".", 1)
                 if child.id != folder_name:
                     print(f"Warning: Directory ID '{child.id}' has a GUID suffix ({guid}).")
@@ -110,6 +119,11 @@ class Installer:
             msi_path.unlink(missing_ok=True)
 
             if progress_callback:
+                progress_callback("Copying AppData files to root...")
+
+            self._copy_appdata_to_root()
+
+            if progress_callback:
                 progress_callback("Installing EuroScope font...")
 
             self._install_euroscope_font()
@@ -124,6 +138,33 @@ class Installer:
             if progress_callback:
                 progress_callback(f"Error: {e}")
             return False
+
+    def _copy_appdata_to_root(self) -> None:
+        """Copy all files and folders from AppDataFolder/Euroscope/ to the root directory."""
+        try:
+            appdata_source = self.path_manager.euroscope / "AppDataFolder" / "Euroscope"
+
+            if not appdata_source.exists():
+                print(f"Warning: AppDataFolder/Euroscope not found at {appdata_source}")
+                return
+
+            # Copy all contents from AppDataFolder/Euroscope/ to root
+            for item in appdata_source.iterdir():
+                dest = self.path_manager.euroscope / item.name
+
+                if item.is_file():
+                    shutil.copy2(item, dest)
+                    print(f"Copied file: {item.name}")
+                elif item.is_dir():
+                    if dest.exists():
+                        shutil.rmtree(dest)
+                    shutil.copytree(item, dest)
+                    print(f"Copied directory: {item.name}")
+
+            print("AppData files copied successfully.")
+
+        except Exception as e:
+            print(f"Warning: Could not copy AppData files: {e}")
 
     def _install_euroscope_font(self) -> None:
         """Install EuroScope.ttf font on Windows if it doesn't exist."""
