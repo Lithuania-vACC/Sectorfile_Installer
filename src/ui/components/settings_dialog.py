@@ -159,14 +159,13 @@ class SettingsDialog:
         """Handle save button click."""
         # Validate required fields
         if not (
-            self.name_field.value
-            and self.vatsim_id_field.value
+            self.vatsim_id_field.value
             and self.vatsim_password_field.value
             and self.rating_dropdown.value
         ):
             self._show_error(
                 "Missing Data",
-                "Please fill in all required fields: Name, VATSIM ID, Password, and Rating.",
+                "Please fill in all required fields: VATSIM ID, Password, and Rating.",
             )
             return
 
