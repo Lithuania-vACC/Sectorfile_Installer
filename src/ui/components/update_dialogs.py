@@ -139,7 +139,7 @@ class MandatoryUpdateDialog(BaseDialog):
 
             # Launch updater and exit
             self._update_progress("Preparing to install update...")
-            self.update_manager.launch_updater_and_exit(new_version_path)
+            self.update_manager.launch_updater_and_exit(new_version_path, self.page)
 
             # Note: The above call will exit the application, so code below won't execute
 
@@ -154,10 +154,6 @@ class MandatoryUpdateDialog(BaseDialog):
                     "Please try again or download the update manually from GitHub."
                 ),
                 actions=[
-                    ft.TextButton(
-                        text="Retry",
-                        on_click=lambda _: self._retry_update(error_dialog),
-                    ),
                     ft.TextButton(
                         text="Exit Application",
                         on_click=lambda _: self.page.window.close(),

@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 import zipfile
 import subprocess
 from pathlib import Path
@@ -9,11 +10,7 @@ from packaging import version as pkg_version
 import requests
 
 from config.settings import settings
-
-try:
-    import tomllib  # Python 3.11+
-except ImportError:
-    import tomli as tomllib  # Fallback for older versions
+from services.path_manager import PathManager
 
 
 class AppUpdateManager:
@@ -21,40 +18,12 @@ class AppUpdateManager:
 
     @staticmethod
     def get_current_version() -> str:
-        """Get the current application version from pyproject.toml.
+        """Get the current application version from settings.
 
         Returns:
-            Version string in format MAJOR.MINOR.PATCH (e.g., "2.0.0")
-
-        Raises:
-            FileNotFoundError: If pyproject.toml cannot be found
-            ValueError: If version cannot be parsed from pyproject.toml
+            Version string in format MAJOR.MINOR.PATCH (e.g., "2.1.1")
         """
-        if getattr(sys, 'frozen', False):
-            app_dir = Path(sys.executable).parent
-            pyproject_path = app_dir.parent.parent / "pyproject.toml"
-            if not pyproject_path.exists():
-                raise FileNotFoundError(
-                    "pyproject.toml not found. Version information unavailable."
-                )
-        else:
-            current_file = Path(__file__)
-            pyproject_path = current_file.parent.parent.parent / "pyproject.toml"
-
-        if not pyproject_path.exists():
-            raise FileNotFoundError(f"pyproject.toml not found at {pyproject_path}")
-
-        try:
-            with open(pyproject_path, "rb") as f:
-                data = tomllib.load(f)
-                version = data.get("project", {}).get("version")
-
-                if not version:
-                    raise ValueError("Version field not found in pyproject.toml")
-
-                return version
-        except Exception as e:
-            raise ValueError(f"Failed to parse version from pyproject.toml: {e}")
+        return settings.APP_VERSION
 
     @staticmethod
     def get_latest_release() -> Optional[dict]:
@@ -238,10 +207,10 @@ class AppUpdateManager:
             # Running as compiled executable
             return str(Path(sys.executable).parent)
         else:
-            return str(Path(__file__).parent.parent.parent / "main.dist")
+            return str(Path(__file__).parent.parent / "assets")
 
     @staticmethod
-    def launch_updater_and_exit(new_version_path: str):
+    def launch_updater_and_exit(new_version_path: str, page=None):
         """Launch the updater script and exit the application.
 
         This function will start the updater batch script, which will:
@@ -252,13 +221,15 @@ class AppUpdateManager:
 
         Args:
             new_version_path: Path to the extracted new version files
+            page: Optional Flet page instance for proper window closing
 
         Note:
-            This function does not return - it exits the application
+            This function exits the application via page.window.destroy() if page
+            is provided, otherwise uses sys.exit(0)
         """
-        install_dir = AppUpdateManager.get_installation_directory()
-        exe_path = sys.executable
-        updater_script = os.path.join(install_dir, "updater.bat")
+        install_dir = PathManager().root
+        exe_path = install_dir / "main.exe"
+        updater_script = ".\\updater.bat"
 
         if not os.path.exists(updater_script):
             raise FileNotFoundError(
@@ -266,19 +237,47 @@ class AppUpdateManager:
                 "The application may not have been built correctly."
             )
 
-        print(f"Launching updater script: {updater_script}")
+        # Create updater config file
+        config_path = install_dir / "updater_config.json"
+        config_data = {
+            "new_version_path": str(new_version_path),
+            "install_path": str(install_dir),
+            "exe_path": str(exe_path)
+        }
+
+        print(f"Creating updater config at: {config_path}")
         print(f"New version path: {new_version_path}")
         print(f"Installation directory: {install_dir}")
         print(f"Executable path: {exe_path}")
 
         try:
+            with open(config_path, "w") as config_file:
+                json.dump(config_data, config_file, indent=2)
+        except Exception as e:
+            raise Exception(f"Failed to create updater config file: {e}")
+
+        with open("update_log.txt", "a") as log_file:
+            log_file.write(f"Launching updater with config:\n")
+            log_file.write(f"Config path: {config_path}\n")
+            log_file.write(f"New version path: {new_version_path}\n")
+            log_file.write(f"Installation directory: {install_dir}\n")
+            log_file.write(f"Executable path: {exe_path}\n\n")
+
+        try:
+            # Launch batch script with cmd.exe to ensure it runs properly
             subprocess.Popen(
-                [updater_script, new_version_path, install_dir, exe_path],
-                creationflags=subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS,
-                close_fds=True,
+                f'cmd.exe /c start "" /min "{updater_script}"',
+                cwd=install_dir,
+                shell=True,
+                creationflags=subprocess.CREATE_NEW_CONSOLE,
             )
         except Exception as e:
             raise Exception(f"Failed to launch updater: {e}")
 
         print("Exiting application for update...")
-        sys.exit(0)
+
+        if page:
+            # Properly close the Flet window
+            page.window.destroy()
+        else:
+            sys.exit(0)
