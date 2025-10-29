@@ -30,14 +30,18 @@ echo Removing old files...
 REM Delete old files (except updater.bat and updater_config.json)
 for /d %%d in ("%INSTALL_PATH%\*") do (
     if /i not "%%~nxd"=="updater.bat" (
-        rmdir /s /q "%%d" 2>nul
+        if /i not "%%~nxd"=="config.json" (
+            rmdir /s /q "%%d" 2>nul
+        )
     )
 )
 
 for %%f in ("%INSTALL_PATH%\*") do (
     if /i not "%%~nxf"=="updater.bat" (
         if /i not "%%~nxf"=="updater_config.json" (
-            del /f /q "%%f" 2>nul
+            if /i not "%%~nxf"=="config.json" (
+                del /f /q "%%f" 2>nul
+            )
         )
     )
 )
