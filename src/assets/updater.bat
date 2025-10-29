@@ -56,8 +56,9 @@ echo Starting updated application...
 
 REM Launch new version
 start "" "%EXE_PATH%"
+timeout 2
 
-REM Clean up config file and self-delete this updater script
-del /f /q "updater_config.json" 2>nul
-(goto) 2>nul & del "%~f0"
+exit
+exit
+exit
 exit
