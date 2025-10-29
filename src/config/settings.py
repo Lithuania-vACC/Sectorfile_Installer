@@ -11,7 +11,7 @@ class Settings:
 
     # Application Identity
     APP_NAME: str = "vACC Lithuania"
-    APP_VERSION: str = "2.1.3"
+    APP_VERSION: str = "2.1.4"
     FIR_CODE: str = "EYVL"
 
     # Directory Structure
