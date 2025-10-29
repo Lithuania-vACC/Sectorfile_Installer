@@ -245,6 +245,11 @@ class Installer:
             zip_file.unlink()
 
             if progress_callback:
+                progress_callback("Copying custom files...")
+
+            self._copy_custom_files_to_sectorfile()
+
+            if progress_callback:
                 progress_callback("Sectorfile installation complete!")
 
             return True
@@ -254,6 +259,52 @@ class Installer:
             if progress_callback:
                 progress_callback(f"Error: {e}")
             return False
+
+    def _copy_custom_files_to_sectorfile(self) -> None:
+        """Copy custom files from CustomFiles/{FIR_CODE} to Sectorfile/{FIR_CODE}."""
+        try:
+            custom_fir_path = self.path_manager.custom_fir_path(settings.FIR_CODE)
+
+            if not custom_fir_path.exists():
+                print(f"No custom files directory found at {custom_fir_path}")
+                return
+
+            sectorfile_fir_path = self.path_manager.sectorfile / settings.FIR_CODE
+
+            if not sectorfile_fir_path.exists():
+                print(f"Warning: Sectorfile FIR directory not found at {sectorfile_fir_path}")
+                return
+
+            # Subdirectories to copy
+            subdirs = ["Alias", "ASR", "Plugins", "Settings", "Sounds"]
+
+            for subdir in subdirs:
+                source_dir = custom_fir_path / subdir
+                dest_dir = sectorfile_fir_path / subdir
+
+                if not source_dir.exists():
+                    continue
+
+                if not dest_dir.exists():
+                    dest_dir.mkdir(parents=True, exist_ok=True)
+
+                # Copy all files from source to destination
+                for item in source_dir.iterdir():
+                    dest_item = dest_dir / item.name
+
+                    if item.is_file():
+                        shutil.copy2(item, dest_item)
+                        print(f"Copied custom file: {subdir}/{item.name}")
+                    elif item.is_dir():
+                        if dest_item.exists():
+                            shutil.rmtree(dest_item)
+                        shutil.copytree(item, dest_item)
+                        print(f"Copied custom directory: {subdir}/{item.name}")
+
+            print("Custom files copied successfully.")
+
+        except Exception as e:
+            print(f"Warning: Could not copy custom files: {e}")
 
     def _wait_for_zip_file(
         self, progress_callback: Optional[Callable[[str], None]] = None, timeout: int = None

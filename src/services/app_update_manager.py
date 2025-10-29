@@ -277,7 +277,7 @@ class AppUpdateManager:
         print("Exiting application for update...")
 
         if page:
-            # Properly close the Flet window
             page.window.destroy()
-        else:
-            sys.exit(0)
+
+        # Fallback exit
+        sys.exit(0)

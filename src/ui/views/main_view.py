@@ -199,6 +199,10 @@ class MainView(ft.View):
             if config.afv_path:
                 self.launcher.launch_afv(config.afv_path)
 
+            if self.page:
+                self.page.window.destroy()
+
+            # Fallback exit
             import sys
             sys.exit(0)
 
