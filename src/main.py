@@ -9,7 +9,7 @@ from ui.components import MandatoryUpdateDialog, UpdateAvailableDialog
 from ui.views import MainView
 
 
-def check_for_updates(page: ft.Page) -> bool:
+def is_app_update_available(page: ft.Page) -> bool:
     """Check for application updates on startup.
 
     On Windows: Shows a mandatory update dialog if update is available.
@@ -22,7 +22,7 @@ def check_for_updates(page: ft.Page) -> bool:
         page: Flet page instance
 
     Returns:
-        bool: True if application should continue to main view, False otherwise
+        bool: False if application should continue to main view, True otherwise
     """
     try:
         update_manager = AppUpdateManager()
@@ -41,22 +41,19 @@ def check_for_updates(page: ft.Page) -> bool:
             # Show mandatory update dialog (blocks until update completes)
             dialog = MandatoryUpdateDialog(page, release_info, update_manager)
             dialog.show()
-            # Note: If update proceeds successfully, the app will exit and restart
             # If user closes dialog or update fails, they can't proceed
-            # Return False to prevent showing main view
-            return False
+            return True
         else:
             # Show informational dialog (non-blocking)
             dialog = UpdateAvailableDialog(page, release_info)
             dialog.show()
             # User can continue using the app after closing dialog
-            return True
+            return False
 
     except Exception as e:
         # If update check fails (e.g., no internet), just log and continue
         print(f"Update check failed: {e}")
-        # Allow application to start normally
-        return True
+        return False
 
 
 def main(page: ft.Page) -> None:
@@ -99,11 +96,9 @@ def main(page: ft.Page) -> None:
 
     page.update()
 
-    # Check for application updates before showing main view
-    should_continue = check_for_updates(page)
+    update_available = is_app_update_available(page)
 
-    if not should_continue:
-        # Mandatory update required, don't show main view
+    if update_available:
         return
 
     main_view = MainView(page)
