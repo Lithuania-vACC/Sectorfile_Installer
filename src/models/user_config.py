@@ -31,8 +31,7 @@ class UserConfig:
     def is_valid(self) -> bool:
         """Check if all required fields are filled."""
         return bool(
-            self.name
-            and self.vatsim_id
+            self.vatsim_id
             and self.vatsim_password
             and self.rating
         )
