@@ -1,4 +1,4 @@
-from ui.components.views.main_view import MainView
+from ui.views.main_view import MainView
 
 __all__ = [
     "MainView",
