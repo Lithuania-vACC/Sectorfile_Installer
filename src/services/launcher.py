@@ -2,12 +2,12 @@
 
 import subprocess
 from pathlib import Path
-from typing import Optional
 
 import psutil
 
-from config.settings import settings
+from config import settings
 from models import UserConfig
+from services import PathManager
 
 
 class Launcher:
@@ -25,11 +25,11 @@ class Launcher:
         """
         try:
             hoppie_file = (
-                sectorfile_path
-                / settings.FIR_CODE
-                / "Plugins"
-                / "Topsky"
-                / "TopSkyCPDLChoppieCode.txt"
+                    sectorfile_path
+                    / settings.FIR_CODE
+                    / "Plugins"
+                    / "Topsky"
+                    / "TopSkyCPDLChoppieCode.txt"
             )
             if hoppie_file.parent.exists():
                 hoppie_file.write_text(config.hoppie_code)
@@ -48,13 +48,13 @@ class Launcher:
         except Exception as e:
             print(f"Error preparing profiles: {e}")
 
+    @staticmethod
     def _update_profile_credentials(
-        self,
-        profile_path: Path,
-        name: str,
-        vatsim_id: str,
-        password: str,
-        rating: int,
+            profile_path: Path,
+            name: str,
+            vatsim_id: str,
+            password: str,
+            rating: int,
     ) -> None:
         """Update a profile file with user credentials.
 
@@ -72,10 +72,10 @@ class Launcher:
                 line
                 for line in lines
                 if not (
-                    line.startswith("LastSession\trealname")
-                    or line.startswith("LastSession\tcertificate")
-                    or line.startswith("LastSession\tpassword")
-                    or line.startswith("LastSession\trating")
+                        line.startswith("LastSession\trealname")
+                        or line.startswith("LastSession\tcertificate")
+                        or line.startswith("LastSession\tpassword")
+                        or line.startswith("LastSession\trating")
                 )
             ]
 
@@ -93,15 +93,15 @@ class Launcher:
         except Exception as e:
             print(f"Error updating profile {profile_path}: {e}")
 
+    @staticmethod
     def launch_euroscope(
-        self, euroscope_path: Path, profile_name: str, sectorfile_path: Path
+            euroscope_path: Path, profile_name: str
     ) -> bool:
         """Launch EuroScope with a specific profile.
 
         Args:
             euroscope_path: Path to EuroScope directory
             profile_name: Name of the profile to load (without .prf)
-            sectorfile_path: Path to sectorfile directory
 
         Returns:
             True if launched successfully, False otherwise
@@ -150,9 +150,8 @@ class Launcher:
             import platform
             if platform.system() == "Windows":
                 import ctypes
-                import services.path_manager
 
-                shortcut_lnk = str(services.path_manager.PathManager().temp) + "/afv_launcher.lnk"
+                shortcut_lnk = str(PathManager().temp) + "/afv_launcher.lnk"
                 if not Path(shortcut_lnk).exists():
                     import lnkcreator
                     lnkcreator.create_shortcut(
@@ -174,7 +173,8 @@ class Launcher:
             print(f"Error launching AFV: {e}")
             return False
 
-    def _is_process_running(self, process_name: str) -> bool:
+    @staticmethod
+    def _is_process_running(process_name: str) -> bool:
         """Check if a process is currently running.
 
         Args:

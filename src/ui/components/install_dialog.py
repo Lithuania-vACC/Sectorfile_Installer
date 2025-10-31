@@ -55,7 +55,7 @@ class InstallProgressDialog:
 
         try:
             success = self.installer.install_euroscope(
-                version="3.2.10", progress_callback=progress_callback
+                progress_callback=progress_callback
             )
 
             if success:

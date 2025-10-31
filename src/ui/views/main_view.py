@@ -4,7 +4,6 @@ import flet as ft
 
 from assets.vacc_lithuania_darkgreen_transparent_b64 import IMAGE_B64 as LOGO_DARK_B64
 from assets.vacc_lithuania_white_transparent_b64 import IMAGE_B64 as LOGO_WHITE_B64
-from config import settings
 from services import (
     ConfigManager,
     Installer,
@@ -124,7 +123,7 @@ class MainView(ft.View):
             expand=True,
         )
 
-    def _on_settings_click(self, e: ft.ControlEvent) -> None:
+    def _on_settings_click(self, _: ft.ControlEvent) -> None:
         """Handle settings button click."""
         try:
             settings_dialog = SettingsDialog(self.page, self.config_manager)
@@ -134,7 +133,7 @@ class MainView(ft.View):
             import traceback
             traceback.print_exc()
 
-    def _on_fresh_install_click(self, e: ft.ControlEvent) -> None:
+    def _on_fresh_install_click(self, _: ft.ControlEvent) -> None:
         """Handle fresh install button click."""
         install_dialog = InstallProgressDialog(self.page, self.installer)
         install_dialog.show(on_complete_callback=self._show_sectorfile_install_dialog)
@@ -144,7 +143,7 @@ class MainView(ft.View):
         sectorfile_dialog = SectorfileInstructionsDialog(self.page, self.installer)
         sectorfile_dialog.show()
 
-    def _on_start_click(self, e: ft.ControlEvent) -> None:
+    def _on_start_click(self, _: ft.ControlEvent) -> None:
         """Handle start button click."""
         config = self.config_manager.config
         if not config.is_valid():
@@ -187,8 +186,7 @@ class MainView(ft.View):
 
             success = self.launcher.launch_euroscope(
                 euroscope_path=self.path_manager.euroscope,
-                profile_name=profile_name,
-                sectorfile_path=self.path_manager.sectorfile,
+                profile_name=profile_name
             )
 
             if not success:
@@ -226,7 +224,7 @@ class MainView(ft.View):
         else:
             return "light_mode"
 
-    def _on_theme_toggle(self, e: ft.ControlEvent) -> None:
+    def _on_theme_toggle(self, _: ft.ControlEvent) -> None:
         """Toggle between light and dark theme."""
         config = self.config_manager.config
 

@@ -1,7 +1,6 @@
 """Settings dialog component."""
 
 import flet as ft
-from pathlib import Path
 
 from models import UserConfig, VatsimRating
 from services import ConfigManager
@@ -128,7 +127,7 @@ class SettingsDialog:
         self.dialog.open = True
         self.page.update()
 
-    def _on_browse_click(self, e: ft.ControlEvent) -> None:
+    def _on_browse_click(self, _: ft.ControlEvent) -> None:
         """Handle browse button click."""
         self.file_picker = ft.FilePicker(on_result=self._on_file_picked)
         self.page.overlay.append(self.file_picker)
@@ -147,14 +146,14 @@ class SettingsDialog:
             self.page.overlay.remove(self.file_picker)
         self.page.update()
 
-    def _on_cancel_click(self, e: ft.ControlEvent) -> None:
+    def _on_cancel_click(self, _: ft.ControlEvent) -> None:
         """Handle cancel button click."""
         self.dialog.open = False
         self.page.update()
         if self.dialog in self.page.overlay:
             self.page.overlay.remove(self.dialog)
 
-    def _on_save_click(self, e: ft.ControlEvent) -> None:
+    def _on_save_click(self, _: ft.ControlEvent) -> None:
         """Handle save button click."""
         if not (
             self.vatsim_id_field.value

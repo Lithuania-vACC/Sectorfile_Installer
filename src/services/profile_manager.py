@@ -7,7 +7,8 @@ from typing import List
 class ProfileManager:
     """Manages EuroScope profile (.prf) files."""
 
-    def get_available_profiles(self, sectorfile_path: Path) -> List[str]:
+    @staticmethod
+    def get_available_profiles(sectorfile_path: Path) -> List[str]:
         """Get list of available profile names.
 
         Args:

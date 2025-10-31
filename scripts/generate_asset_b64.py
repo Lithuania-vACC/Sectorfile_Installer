@@ -54,6 +54,7 @@ Do not edit manually - regenerate using the script instead.
 
 # Original filename: {img_file.name}
 # File size: {len(image_data)} bytes
+# noinspection PyPep8
 IMAGE_B64 = """{b64_data}"""
 '''
 

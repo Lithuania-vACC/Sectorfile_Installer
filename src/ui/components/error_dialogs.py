@@ -3,8 +3,9 @@
 from typing import Callable, Optional
 
 import flet as ft
+from ui.components import BaseDialog, SectorfileInstructionsDialog
+
 from services import Installer
-from ui.components import BaseDialog
 
 
 class SectorfileUpdateDialog(BaseDialog):
@@ -39,7 +40,6 @@ class SectorfileUpdateDialog(BaseDialog):
 
     def _on_ok_click(self) -> None:
         """Handle OK button click - start sectorfile update process."""
-        from ui.components import SectorfileInstructionsDialog
 
         self.close()
 

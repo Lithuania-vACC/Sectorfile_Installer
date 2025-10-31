@@ -26,6 +26,10 @@ class Settings:
     EUROSCOPE_MSI_URL: str = "https://euroscope.hu/install/EuroScopeSetup.3.2.3.2.msi"
     EUROSCOPE_FONT_NAME: str = "EuroScope.ttf"
     EUROSCOPE_FONT_PATH: str = "C:/Windows/Fonts/EuroScope.ttf"
+    EUROSCOPE_FOLDER_NAME_MAP = {
+        "_635FE19FDC6F4CF2866FC8696C8E5A0E": "soundbackends",
+        "_E7043CA494204E24ABEE6401A7892467": "sounds",
+    }
 
     AERONAV_BASE_URL: str = "https://files.aero-nav.com"
     SECTORFILE_DOWNLOAD_TIMEOUT: int = 300  # seconds (5 minutes)

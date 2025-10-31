@@ -12,17 +12,12 @@ from typing import Callable, Optional
 
 import pymsi
 
-from config.settings import settings
-from services.path_manager import PathManager
+from config import settings
+from services import PathManager
 
 
 def extract_root(root, output: Path, is_root: bool = True):
     """Extract files from MSI root directory."""
-
-    FOLDER_NAME_MAP = {
-        "_635FE19FDC6F4CF2866FC8696C8E5A0E": "soundbackends",
-        "_E7043CA494204E24ABEE6401A7892467": "sounds",
-    }
 
     if not output.exists():
         output.mkdir(parents=True, exist_ok=True)
@@ -38,8 +33,8 @@ def extract_root(root, output: Path, is_root: bool = True):
         folder_name = child.name
         if is_root:
             # Check if this ID has a mapped name
-            if child.id in FOLDER_NAME_MAP:
-                folder_name = FOLDER_NAME_MAP[child.id]
+            if child.id in settings.EUROSCOPE_FOLDER_NAME_MAP:
+                folder_name = settings.EUROSCOPE_FOLDER_NAME_MAP[child.id]
             elif "." in child.id:
                 folder_name, guid = child.id.split(".", 1)
                 if child.id != folder_name:
@@ -61,12 +56,11 @@ class Installer:
         self.path_manager = path_manager
 
     def install_euroscope(
-        self, version: str, progress_callback: Optional[Callable[[str], None]] = None
+        self, progress_callback: Optional[Callable[[str], None]] = None
     ) -> bool:
         """Install EuroScope from official MSI installer.
 
         Args:
-            version: Version string to set after installation
             progress_callback: Optional callback for progress updates
 
         Returns:
@@ -338,7 +332,8 @@ class Installer:
 
         return None
 
-    def _open_file_explorer(self, path: Path) -> None:
+    @staticmethod
+    def _open_file_explorer(path: Path) -> None:
         """Open directory in system file explorer.
 
         Args:

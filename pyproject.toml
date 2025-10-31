@@ -1,18 +1,19 @@
 [project]
 name = "sectorfile-installer"
-version = "2.1.2"
+version = "2.1.5"
 description = "EuroScope sectorfile installer for vACC Lithuania"
-authors = [{name = "Lithuania vACC"}]
+authors = [{ name = "Lithuania vACC" }]
 requires-python = ">=3.10"
 dependencies = [
-    "flet>=0.25.0",
-    "psutil>=7.0.0",
+    "flet==0.28.3",
+    "psutil>=7.1.2",
     "darkdetect>=0.8.0",
     "python-msi",
     "lnkcreator",
-    "requests>=2.31.0",
+    "requests>=2.32.5",
     "beautifulsoup4>=4.12.0",
-    "certifi"
+    "certifi>=2025.10.5",
+    "packaging>=23.0"
 ]
 
 [tool.flet]

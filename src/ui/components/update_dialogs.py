@@ -2,7 +2,7 @@
 
 import flet as ft
 
-from services.app_update_manager import AppUpdateManager
+from services import AppUpdateManager
 from ui.components import BaseDialog
 
 
@@ -85,7 +85,6 @@ class MandatoryUpdateDialog(BaseDialog):
 
             self._update_progress("Preparing to install update...")
             self.update_manager.launch_updater_and_exit(new_version_path, self.page)
-
 
         except Exception as e:
             self._update_progress("")

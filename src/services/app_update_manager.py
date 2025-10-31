@@ -121,13 +121,11 @@ class AppUpdateManager:
             return False, None
 
     @staticmethod
-    def download_update(download_url: str, progress_callback=None) -> str:
+    def download_update(download_url: str) -> str:
         """Download the update zip file from GitHub.
 
         Args:
             download_url: Direct download URL for main.dist.zip
-            progress_callback: Optional callback function for progress updates
-                               (currently not implemented)
 
         Returns:
             Path to downloaded zip file
@@ -149,7 +147,6 @@ class AppUpdateManager:
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:
                         f.write(chunk)
-                        # TODO: Call progress_callback if provided
 
             print(f"Download complete: {zip_path}")
             return zip_path
@@ -182,8 +179,6 @@ class AppUpdateManager:
             print(f"Extracting update to {extract_dir}...")
             with zipfile.ZipFile(zip_path, "r") as zip_ref:
                 zip_ref.extractall(extract_dir)
-
-            extracted_items = os.listdir(extract_dir)
 
             main_dist_path = os.path.join(extract_dir, "main.dist")
             if os.path.exists(main_dist_path) and os.path.isdir(main_dist_path):

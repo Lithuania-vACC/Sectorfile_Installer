@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import List
 
-from config.settings import settings
+from config import settings
 
 
 class PathManager:

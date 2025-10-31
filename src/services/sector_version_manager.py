@@ -16,8 +16,8 @@ from typing import Optional
 import requests
 from bs4 import BeautifulSoup
 
-from config.settings import settings
-from services.path_manager import PathManager
+from config import settings
+from services import PathManager
 
 
 class SectorVersionManager:
