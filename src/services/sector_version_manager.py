@@ -11,10 +11,10 @@ Version Format:
     Example: 20251004190612-251001-0003
 """
 
+import re
 from typing import Optional
 
 import requests
-from bs4 import BeautifulSoup
 
 from config import settings
 from services import PathManager
@@ -65,21 +65,30 @@ class SectorVersionManager:
         if response.status_code != 200:
             raise ConnectionError(f"Failed to fetch sectorfile versions from {url}")
 
-        soup = BeautifulSoup(response.text, "html.parser")
-        rows = soup.find_all("tr")
+        html = response.text
         newest_version: Optional[str] = None
         newest_timestamp = 0
 
-        for row in rows:
-            cols = row.find_all("td")
-            if len(cols) < 5:
+        # Pattern to match table rows with their td cells
+        # Captures content of td cells in a row
+        row_pattern = re.compile(r'<tr[^>]*>(.*?)</tr>', re.DOTALL)
+        td_pattern = re.compile(r'<td[^>]*>(.*?)</td>', re.DOTALL)
+
+        for row_match in row_pattern.finditer(html):
+            row_html = row_match.group(1)
+            cells = [td_pattern.sub(lambda m: m.group(1), cell)
+                    for cell in td_pattern.findall(row_html)]
+
+            if len(cells) < 5:
                 continue
 
-            package_name = cols[1].text.strip()
+            cells = [re.sub(r'<[^>]+>', '', cell).strip() for cell in cells]
+
+            package_name = cells[1]
             if package_name != f"{settings.FIR_CODE} Installer":
                 continue
 
-            timestamp_str = cols[4].text.strip()
+            timestamp_str = cells[4]
             timestamp = int(
                 timestamp_str.replace("zip", "")
                 .replace("7z", "")
@@ -91,9 +100,9 @@ class SectorVersionManager:
             if timestamp > newest_timestamp:
                 newest_timestamp = timestamp
 
-                airac = cols[2].text.strip().replace(" / ", "")
+                airac = cells[2].replace(" / ", "")
 
-                build = cols[3].text.strip().zfill(4)
+                build = cells[3].zfill(4)
 
                 newest_version = f"{timestamp}-{airac}-{build}"
 
