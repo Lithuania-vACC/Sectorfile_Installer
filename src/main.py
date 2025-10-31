@@ -89,6 +89,7 @@ def main(page: ft.Page) -> None:
     page.window.width = settings.WINDOW_WIDTH
     page.window.height = settings.WINDOW_HEIGHT
     page.window.resizable = False
+    page.window.maximizable = False
 
     page.update()
 

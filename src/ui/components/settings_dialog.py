@@ -5,7 +5,7 @@ import flet as ft
 from models import UserConfig, VatsimRating
 from services import ConfigManager
 from ui.components import BaseDialog
-
+from config import settings
 
 class SettingsDialog:
     """Settings configuration dialog."""
@@ -100,10 +100,24 @@ class SettingsDialog:
             modal=True,
             title=ft.Text("Settings"),
             content=ft.Container(
-                content=ft.Row(
-                    controls=[left_column, right_column],
-                    spacing=15,
-                    vertical_alignment=ft.CrossAxisAlignment.START,
+                content=ft.Column(
+                    controls=[
+                        ft.Row(
+                            controls=[left_column, right_column],
+                            spacing=15,
+                            vertical_alignment=ft.CrossAxisAlignment.START,
+                        ),
+                        ft.Container(
+                            content=ft.Text(
+                                f"v{settings.APP_VERSION}",
+                                size=11,
+                                color="#9E9E9E",
+                            ),
+                            alignment=ft.alignment.bottom_left,
+                            padding=ft.padding.only(top=10, left=2),
+                        ),
+                    ],
+                    spacing=0,
                 ),
                 width=550,
             ),
