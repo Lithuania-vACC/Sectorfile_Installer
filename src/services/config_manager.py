@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Optional
 
 from models import UserConfig
-from services.path_manager import PathManager
+from services import PathManager
 
 
 class ConfigManager:

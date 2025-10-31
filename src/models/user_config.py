@@ -3,7 +3,7 @@
 from dataclasses import dataclass, asdict
 from typing import Optional
 
-from models.enums import VatsimRating
+from models import VatsimRating
 
 
 @dataclass

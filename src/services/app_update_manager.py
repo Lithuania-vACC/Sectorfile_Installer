@@ -9,8 +9,8 @@ from packaging import version as pkg_version
 
 import requests
 
-from config.settings import settings
-from services.path_manager import PathManager
+from config import settings
+from services import PathManager
 
 
 class AppUpdateManager:
