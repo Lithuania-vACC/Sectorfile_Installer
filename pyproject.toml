@@ -1,6 +1,6 @@
 [project]
 name = "sectorfile-installer"
-version = "2.1.5"
+version = "2.1.6"
 description = "EuroScope sectorfile installer for vACC Lithuania"
 authors = [{ name = "Lithuania vACC" }]
 requires-python = ">=3.10"
