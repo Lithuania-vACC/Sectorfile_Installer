@@ -32,7 +32,7 @@ def is_app_update_available(page: ft.Page) -> bool:
 
         if not is_available:
             # No update needed, continue normally
-            return True
+            return False
 
         # Update is available
         is_windows = platform.system() == "Windows"
