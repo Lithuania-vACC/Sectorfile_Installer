@@ -65,9 +65,10 @@ echo Starting updated application...
 
 REM Launch new version
 start "" "%EXE_PATH%"
-timeout 2
 
 exit
 exit
 exit
 exit
+REM Exit many times to ensure complete termination of the script, since the script may be overwritten and
+REM line numbers may change. This ensures that it closes, even if the script is modified in future versions.

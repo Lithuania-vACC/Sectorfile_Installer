@@ -4,5 +4,4 @@ darkdetect>=0.8.0
 python-msi
 lnkcreator
 requests>=2.32.5
-certifi>=2025.10.5
 packaging>=23.0
