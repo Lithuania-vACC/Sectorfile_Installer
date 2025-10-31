@@ -6,6 +6,7 @@ from services.launcher import Launcher
 from services.path_manager import PathManager
 from services.profile_manager import ProfileManager
 from services.sector_version_manager import SectorVersionManager
+from services.app_update_manager import AppUpdateManager
 
 __all__ = [
     "ConfigManager",
@@ -14,4 +15,5 @@ __all__ = [
     "PathManager",
     "ProfileManager",
     "SectorVersionManager",
+    "AppUpdateManager"
 ]

@@ -1,11 +1,10 @@
 """Main application view."""
 
 import flet as ft
-from pathlib import Path
 
 from assets.vacc_lithuania_darkgreen_transparent_b64 import IMAGE_B64 as LOGO_DARK_B64
 from assets.vacc_lithuania_white_transparent_b64 import IMAGE_B64 as LOGO_WHITE_B64
-from config.settings import settings
+from config import settings
 from services import (
     ConfigManager,
     Installer,

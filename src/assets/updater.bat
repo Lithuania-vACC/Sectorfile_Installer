@@ -1,3 +1,4 @@
+@echo off
 setlocal enabledelayedexpansion
 
 REM Sectorfile Installer Auto-Updater Script

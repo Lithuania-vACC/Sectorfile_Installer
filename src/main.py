@@ -3,12 +3,10 @@
 import platform
 import flet as ft
 
-from config.settings import settings
-from services import ConfigManager, PathManager
-from services.app_update_manager import AppUpdateManager
-from ui.components.settings_dialog import SettingsDialog
-from ui.components.update_dialogs import MandatoryUpdateDialog, UpdateAvailableDialog
-from ui.views.main_view import MainView
+from config import settings
+from services import ConfigManager, PathManager, AppUpdateManager
+from ui.components import MandatoryUpdateDialog, UpdateAvailableDialog
+from ui.views import MainView
 
 
 def check_for_updates(page: ft.Page) -> bool:

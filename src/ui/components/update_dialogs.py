@@ -1,60 +1,9 @@
 """Application update dialog components."""
 
 import flet as ft
-from typing import Callable, Optional
 
 from services.app_update_manager import AppUpdateManager
-
-
-class BaseDialog:
-    """Base class for modal dialogs."""
-
-    def __init__(
-        self,
-        page: ft.Page,
-        title: str,
-        content: str | ft.Control,
-        actions: Optional[list[ft.Control]] = None,
-        modal: bool = True
-    ):
-        """Initialize base dialog.
-
-        Args:
-            page: Flet page instance
-            title: Dialog title
-            content: Dialog content (string or Control)
-            actions: List of action buttons
-            modal: Whether dialog is modal
-        """
-        self.page = page
-
-        content_control = ft.Text(content) if isinstance(content, str) else content
-
-        self.dialog = ft.AlertDialog(
-            modal=modal,
-            title=ft.Text(title),
-            content=content_control,
-            actions=actions or [
-                ft.TextButton(
-                    text="OK",
-                    on_click=lambda _: self.close(),
-                )
-            ],
-        )
-
-    def show(self) -> None:
-        """Show the dialog."""
-        if self.dialog not in self.page.overlay:
-            self.page.overlay.append(self.dialog)
-        self.dialog.open = True
-        self.page.update()
-
-    def close(self) -> None:
-        """Close the dialog."""
-        self.dialog.open = False
-        self.page.update()
-        if self.dialog in self.page.overlay:
-            self.page.overlay.remove(self.dialog)
+from ui.components import BaseDialog
 
 
 class MandatoryUpdateDialog(BaseDialog):
@@ -65,10 +14,10 @@ class MandatoryUpdateDialog(BaseDialog):
     """
 
     def __init__(
-        self,
-        page: ft.Page,
-        release_info: dict,
-        update_manager: AppUpdateManager
+            self,
+            page: ft.Page,
+            release_info: dict,
+            update_manager: AppUpdateManager
     ):
         """Initialize mandatory update dialog.
 
@@ -124,27 +73,21 @@ class MandatoryUpdateDialog(BaseDialog):
         Downloads the update, extracts it, and launches the updater script.
         """
         try:
-            # Disable the button to prevent double-clicks
             self.dialog.actions[0].disabled = True
             self.page.update()
 
-            # Download update
             self._update_progress("Downloading update...")
             download_url = self.release_info["download_url"]
             zip_path = self.update_manager.download_update(download_url)
 
-            # Extract update
             self._update_progress("Extracting update...")
             new_version_path = self.update_manager.extract_update(zip_path)
 
-            # Launch updater and exit
             self._update_progress("Preparing to install update...")
             self.update_manager.launch_updater_and_exit(new_version_path, self.page)
 
-            # Note: The above call will exit the application, so code below won't execute
 
         except Exception as e:
-            # Show error if update fails
             self._update_progress("")
             error_dialog = ft.AlertDialog(
                 modal=True,
@@ -174,7 +117,6 @@ class MandatoryUpdateDialog(BaseDialog):
         if error_dialog in self.page.overlay:
             self.page.overlay.remove(error_dialog)
 
-        # Re-enable the update button
         self.dialog.actions[0].disabled = False
         self.page.update()
 

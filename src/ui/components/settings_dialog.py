@@ -5,7 +5,7 @@ from pathlib import Path
 
 from models import UserConfig, VatsimRating
 from services import ConfigManager
-from ui.components.error_dialogs import BaseDialog
+from ui.components import BaseDialog
 
 
 class SettingsDialog:
@@ -21,7 +21,6 @@ class SettingsDialog:
         self.page = page
         self.config_manager = config_manager
 
-        # Form fields
         self.name_field = ft.TextField(
             label="Name",
             value=self.config_manager.config.name,
@@ -157,7 +156,6 @@ class SettingsDialog:
 
     def _on_save_click(self, e: ft.ControlEvent) -> None:
         """Handle save button click."""
-        # Validate required fields
         if not (
             self.vatsim_id_field.value
             and self.vatsim_password_field.value
@@ -176,9 +174,7 @@ class SettingsDialog:
             rating=VatsimRating(self.rating_dropdown.value),
             hoppie_code=self.hoppie_code_field.value,
             afv_path=self.afv_path_field.value,
-            theme_mode=self.config_manager.config.theme_mode,
-            euroscope_version=self.config_manager.config.euroscope_version,
-            sectorfile_airac=self.config_manager.config.sectorfile_airac,
+            theme_mode=self.config_manager.config.theme_mode
         )
 
         self.config_manager.save(config)

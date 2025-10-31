@@ -40,14 +40,11 @@ def generate_b64_files():
         with open(img_file, "rb") as f:
             image_data = f.read()
 
-        # Encode to base64
         b64_data = base64.b64encode(image_data).decode("utf-8")
 
-        # Create the Python filename (replace extension with _b64.py)
         py_filename = img_file.stem + "_b64.py"
         py_filepath = assets_dir / py_filename
 
-        # Generate the Python file content
         py_content = f'''"""
 Auto-generated base64-encoded image data for: {img_file.name}
 
@@ -60,13 +57,13 @@ Do not edit manually - regenerate using the script instead.
 IMAGE_B64 = """{b64_data}"""
 '''
 
-        # Write the Python file
         with open(py_filepath, "w", encoding="utf-8") as f:
             f.write(py_content)
 
         print(f" Generated: {py_filename} ({len(b64_data)} chars)")
 
     print(f"\nSuccessfully generated {len(image_files)} base64 .py file(s)")
+
 
 if __name__ == "__main__":
     generate_b64_files()

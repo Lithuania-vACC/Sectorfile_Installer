@@ -19,9 +19,6 @@ class UserConfig:
     afv_path: str = ""
     theme_mode: str = "system"  # "light", "dark", or "system"
 
-    euroscope_version: str = "0.0.0.0"
-    sectorfile_airac: str = "0000-00"
-
     def __post_init__(self):
         if not self.afv_path:
             default_path = r"C:\AudioForVATSIM\AudioForVATSIM.exe"
@@ -57,6 +54,4 @@ class UserConfig:
             hoppie_code=data.get("hoppie_code", ""),
             afv_path=data.get("afv_path", ""),
             theme_mode=data.get("theme_mode", "system"),
-            euroscope_version=data.get("euroscope_version", "0.0.0.0"),
-            sectorfile_airac=data.get("sectorfile_airac", "0000-00"),
         )
