@@ -290,9 +290,7 @@ class Installer:
                         shutil.copy2(item, dest_item)
                         print(f"Copied custom file: {subdir}/{item.name}")
                     elif item.is_dir():
-                        if dest_item.exists():
-                            shutil.rmtree(dest_item)
-                        shutil.copytree(item, dest_item)
+                        shutil.copytree(item, dest_item, dirs_exist_ok=True)
                         print(f"Copied custom directory: {subdir}/{item.name}")
 
             print("Custom files copied successfully.")
