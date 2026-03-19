@@ -84,10 +84,10 @@ jobs:
 
     - name: Install WiX Toolset
       run: |
-        dotnet tool install --global wix
+        dotnet tool install --global wix --version 6.0.2
         wix --version
-        wix extension add -g WixToolset.UI.wixext
-        wix extension add -g WixToolset.Util.wixext
+        wix extension add -g WixToolset.UI.wixext/6.0.2
+        wix extension add -g WixToolset.Util.wixext/6.0.2
 
     - name: Build MSI
       run: |
