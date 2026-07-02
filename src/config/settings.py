@@ -10,7 +10,7 @@ class Settings:
     """Global application settings."""
 
     APP_NAME: str = "vACC Lithuania"
-    APP_VERSION: str = "2.1.7"
+    APP_VERSION: str = "2.2.0"
     FIR_CODE: str = "EYVL"
 
     TEMP_DIR: str = "temp"
