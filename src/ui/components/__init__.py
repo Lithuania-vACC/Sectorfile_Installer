@@ -6,7 +6,6 @@ from ui.components.error_dialogs import (
     SectorfileUpdateDialog,
     SettingsRequiredDialog,
 )
-from ui.components.settings_dialog import SettingsDialog
 from ui.components.update_dialogs import MandatoryUpdateDialog, UpdateAvailableDialog
 
 __all__ = [
@@ -15,7 +14,6 @@ __all__ = [
     "NoProfilesDialog",
     "SectorfileInstructionsDialog",
     "SectorfileUpdateDialog",
-    "SettingsDialog",
     "SettingsRequiredDialog",
     "MandatoryUpdateDialog",
     "UpdateAvailableDialog"

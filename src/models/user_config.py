@@ -17,6 +17,7 @@ class UserConfig:
     hoppie_code: str = ""
 
     afv_path: str = ""
+    vatis_path: str = ""
     theme_mode: str = "system"  # "light", "dark", or "system"
 
     def __post_init__(self):
@@ -52,5 +53,6 @@ class UserConfig:
             rating=VatsimRating(rating_str) if rating_str else None,
             hoppie_code=data.get("hoppie_code", ""),
             afv_path=data.get("afv_path", ""),
+            vatis_path=data.get("vatis_path", ""),
             theme_mode=data.get("theme_mode", "system"),
         )

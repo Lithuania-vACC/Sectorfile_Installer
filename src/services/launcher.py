@@ -174,6 +174,36 @@ class Launcher:
             print(f"Error launching AFV: {e}")
             return False
 
+    def launch_vatis(self, vatis_path: str) -> bool:
+        """Launch vATIS.
+
+        Args:
+            vatis_path: Path to vATIS executable
+
+        Returns:
+            True if launched successfully, False otherwise
+        """
+        if not vatis_path or not Path(vatis_path).exists():
+            return False
+
+        try:
+            exe_name = Path(vatis_path).name
+
+            if self._is_process_running(exe_name):
+                print(f"{exe_name} is already running")
+                return True
+
+            subprocess.Popen(
+                [vatis_path],
+                shell=False,
+                start_new_session=True,
+            )
+            return True
+
+        except Exception as e:
+            print(f"Error launching vATIS: {e}")
+            return False
+
     @staticmethod
     def _is_process_running(process_name: str) -> bool:
         """Check if a process is currently running.

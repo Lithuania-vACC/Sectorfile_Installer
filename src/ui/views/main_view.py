@@ -17,9 +17,9 @@ from ui.components import (
     NoProfilesDialog,
     SectorfileInstructionsDialog,
     SectorfileUpdateDialog,
-    SettingsDialog,
     SettingsRequiredDialog,
 )
+from ui.views.settings_view import SettingsView
 
 
 class MainView(ft.View):
@@ -125,13 +125,9 @@ class MainView(ft.View):
 
     def _on_settings_click(self, _: ft.ControlEvent) -> None:
         """Handle settings button click."""
-        try:
-            settings_dialog = SettingsDialog(self.page, self.config_manager)
-            settings_dialog.show()
-        except Exception as ex:
-            print(f"Error opening settings: {ex}")
-            import traceback
-            traceback.print_exc()
+        settings_view = SettingsView(self.page, self.config_manager)
+        self.page.views.append(settings_view)
+        self.page.update()
 
     def _on_fresh_install_click(self, _: ft.ControlEvent) -> None:
         """Handle fresh install button click."""
@@ -195,6 +191,9 @@ class MainView(ft.View):
 
             if config.afv_path:
                 self.launcher.launch_afv(config.afv_path)
+
+            if config.vatis_path:
+                self.launcher.launch_vatis(config.vatis_path)
 
             if self.page:
                 self.page.window.destroy()
