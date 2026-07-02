@@ -151,7 +151,8 @@ class Launcher:
             if platform.system() == "Windows":
                 import ctypes
 
-                shortcut_lnk = str(PathManager().temp) + "/afv_launcher.lnk"
+                shortcut_lnk = str(PathManager().temp) + f"/{exe_name}_launcher.lnk"
+
                 if not Path(shortcut_lnk).exists():
                     import lnkcreator
                     lnkcreator.create_shortcut(
@@ -160,7 +161,7 @@ class Launcher:
                         arguments=[],
                         asadmin=True
                     )
-                ctypes.windll.shell32.ShellExecuteW(None, "runas", shortcut_lnk, None, None, None)
+                ctypes.windll.shell32.ShellExecuteW(None, "runas", shortcut_lnk, None, None, 1)
             else:
                 subprocess.Popen(
                     [afv_path],
